@@ -1,0 +1,22 @@
+body{
+    background-color:darkgray;
+}
+footer h1{
+    text-align: center;
+    margin: 10px;
+    font-size: xx-large;
+    color:cornsilk;
+}
+img{
+    width: 220px;
+    height: 200px;
+    
+}
+
+#container ,#unList{
+   
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+}
+
