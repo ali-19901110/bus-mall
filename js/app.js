@@ -73,15 +73,7 @@ function renderThreeRandomImages(){
     rightImageIndex = generateRandomIndex(); 
     
     centerImageIndex = generateRandomIndex(); 
-    while(leftImageIndex === rightImageIndex){
-        leftImageIndex = generateRandomIndex(); 
-       }
-    while(leftImageIndex ===  centerImageIndex){
-        centerImageIndex = generateRandomIndex();
-       }
-    while(rightImageIndex === centerImageIndex){
-        rightImageIndex = generateRandomIndex();
-       }
+  checkAreImageDiff();
  }
  console.log(arrOfFirstShow);
  arrOfFirstShow[0]=leftImageIndex;
