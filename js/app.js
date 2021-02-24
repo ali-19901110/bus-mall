@@ -1,6 +1,6 @@
 'use strict';
 
-let maximumClicks = 25;
+let maximumClicks = 24;
 let attempts = 0;
 let namesArr = [];
 let arrOfVotes = [];
@@ -21,8 +21,7 @@ function Product(name, source) {
     namesArr.push(this.name)
 }
 
-let  arr=[];
-getProduct();
+
 new Product('bag', 'images/bag.jpg');
 new Product('banana', 'images/banana.jpg');
 new Product('bathroom', 'images/bathroom.jpg');
@@ -44,67 +43,46 @@ new Product('unicorn', 'images/unicorn.jpg');
 new Product('usb', 'images/usb.gif');
 new Product('wine-glass', 'images/wine-glass.jpg');
 
-
-let leftImageIndex;
-let rightImageIndex;
-let centerImageIndex;
-function checkAreImageDiff() {
-    while (leftImageIndex === rightImageIndex) {
-        leftImageIndex = generateRandomIndex();
-    }
-    while (leftImageIndex === centerImageIndex) {
-        centerImageIndex = generateRandomIndex();
-    }
-    while (rightImageIndex === centerImageIndex) {
-        rightImageIndex = generateRandomIndex();
-    }
-}
+let leftImageIndex=0;
+let rightImageIndex=0;
+let centerImageIndex=0;
 
 function renderThreeRandomImages() {
-    leftImageIndex = generateRandomIndex();
-    rightImageIndex = generateRandomIndex();
-    centerImageIndex = generateRandomIndex();
-    //check is three images are diff          
-    checkAreImageDiff();
-    while (arrOfFirstShow.includes(leftImageIndex) || arrOfFirstShow.includes(rightImageIndex) || arrOfFirstShow.includes(centerImageIndex)) {
-
-
-        leftImageIndex = generateRandomIndex();
-        rightImageIndex = generateRandomIndex();
-
-        centerImageIndex = generateRandomIndex();
-        while (leftImageIndex === rightImageIndex) {
+    let flag =true
+    while(flag === true){
+        if(arrOfFirstShow.includes(leftImageIndex) ||(leftImageIndex === rightImageIndex )){
             leftImageIndex = generateRandomIndex();
-        }
-        while (leftImageIndex === centerImageIndex) {
-            centerImageIndex = generateRandomIndex();
-        }
-        while (rightImageIndex === centerImageIndex) {
+        }else if (arrOfFirstShow.includes(rightImageIndex) || (rightImageIndex === centerImageIndex)){
             rightImageIndex = generateRandomIndex();
         }
-    }
-    //  console.log(arrOfFirstShow);
-    arrOfFirstShow[0] = leftImageIndex;
-    arrOfFirstShow[1] = rightImageIndex;
-    arrOfFirstShow[2] = centerImageIndex;
-
-
-    //     //show images                                 
-    leftImageElement.setAttribute('src', arrOfObjects[leftImageIndex].source);
-    rightImageElement.setAttribute('src', arrOfObjects[rightImageIndex].source);
-    centerImageElement.setAttribute('src', arrOfObjects[centerImageIndex].source);
-    //calculate numbersOfshow for every images
-    for (let i = 0; i < arrOfObjects.length; i++) {
-        if (i === leftImageIndex) {
-            arrOfObjects[i].timesOfShow++;
-        } else if (i === rightImageIndex) {
-            arrOfObjects[i].timesOfShow++;
-        } else if (i === centerImageIndex) {
-            arrOfObjects[i].timesOfShow++;
+        else if(arrOfFirstShow.includes(centerImageIndex) ||(centerImageIndex === rightImageIndex ) || (centerImageIndex === leftImageIndex)){
+            centerImageIndex = generateRandomIndex();
+        }
+        else{
+            flag =false;
         }
     }
-
+    arrOfFirstShow =[leftImageIndex,rightImageIndex,centerImageIndex];
+    console.log(arrOfFirstShow);
+    //     //show images                                 
+    leftImageElement.setAttribute('src', arrOfObjects[leftImageIndex].source);
+                   arrOfObjects[leftImageIndex].timesOfShow++;
+    rightImageElement.setAttribute('src', arrOfObjects[rightImageIndex].source);
+                   arrOfObjects[rightImageIndex].timesOfShow++;
+    centerImageElement.setAttribute('src', arrOfObjects[centerImageIndex].source);
+                   arrOfObjects[centerImageIndex].timesOfShow++;
+{    //calculate numbersOfshow for every images
+//     for (let i = 0; i < arrOfObjects.length; i++) {
+//         if (i === leftImageIndex) {
+//             arrOfObjects[i].timesOfShow++;
+//         } else if (i === rightImageIndex) {
+//             arrOfObjects[i].timesOfShow++;
+//         } else if (i === centerImageIndex) {
+//             arrOfObjects[i].timesOfShow++;
+//         }
+//     }
 }
+ }
 // saveProduct();
 renderThreeRandomImages();
 
@@ -121,8 +99,6 @@ centerImageElement.addEventListener('click', handleClicking);
 function handleClicking(event) {
     attempts++;
 
-
-
     if (attempts <= maximumClicks) {
         if (event.target.id === 'leftImage') {
             arrOfObjects[leftImageIndex].timesOfPick++;
@@ -133,14 +109,11 @@ function handleClicking(event) {
         }
         saveProduct();
         renderThreeRandomImages();
-
     }
-
     else {
         for (let j = 0; j < arrOfObjects.length; j++) {
             arrOfVotes.push(arrOfObjects[j].timesOfPick);
             imagesCountArr.push(arrOfObjects[j].timesOfShow);
-
         }
         // saveProduct();
         chartRender();
@@ -148,37 +121,26 @@ function handleClicking(event) {
         rightImageElement.removeEventListener('click', handleClicking);
         centerImageElement.removeEventListener('click', handleClicking);
     }
-
 }
-
-
-function saveProduct() {
-    
+function saveProduct() {   
     let product = JSON.stringify(arrOfObjects);
-    console.log(product);
+    // console.log(product);
     localStorage.setItem('allOfPrduct', product);
 }
-
-
+let  arr=[];
 function getProduct() {
     let getProduct = localStorage.getItem('allOfPrduct');
      arr = JSON.parse(getProduct);
-    //  console.log(arr);
+     console.log(arr);
     if (arr) {
         arrOfObjects = arr;
         myfun();
-    } else {
-        arrOfObjects = [];
     }
-  
 }
-
 let Button = document.getElementById('t');
 Button.addEventListener('click', myfun);
-function myfun(event) {
-
-    // console.log('attemptts=' + attempts);
-    //     if(attempts ===26){
+function myfun() {
+        if(attempts ===25){
         let unorderdList = document.getElementById('unList');
         let li;
         for (let i = 0; i < arrOfObjects.length; i++) {
@@ -188,9 +150,10 @@ function myfun(event) {
             li.textContent = `${arrOfObjects[i].name} it has ${arrOfObjects[i].timesOfPick} timesOfPick.and  it has ${arrOfObjects[i].timesOfShow} timesOfShow.`
 
         }
-//  }
+        Button.removeEventListener('click', myfun)
+ }
 }
-
+getProduct();
 
 function chartRender() {
     var ctx = document.getElementById('myChart').getContext('2d');
